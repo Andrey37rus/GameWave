@@ -1,0 +1,24 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Games list
+{% endblock %}
+
+{% block body %}
+    <h1>Games</h1>
+    <div>
+        {% if games %}
+            {% for game in games %}
+                <div>
+                    <p>Name game: {{ game.name }}</p>
+                    <p>age_rating: {{ game.age_rating }}+</p>
+                    <p>genre: {{ game.genre }}</p>
+                    <p>***********************************************************************</p>
+                </div>
+            {% endfor %}
+
+        {% else %}
+            <h3>No games yet</h3>
+        {% endif %}
+    </div>
+{% endblock %}
