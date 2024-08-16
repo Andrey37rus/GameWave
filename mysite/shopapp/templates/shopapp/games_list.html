@@ -10,7 +10,12 @@
         {% if games %}
             {% for game in games %}
                 <div>
-                    <p>Name game: {{ game.name }}</p>
+                    {% if game.preview %}
+                        <img src="{{ game.preview.url }}" alt="{{ game.preview.name }}">
+                    {% endif %}
+                </div>
+                <div>
+                    <p><a href="{% url 'shopapp:games_details' pk=game.pk %}">Name: {{ game.name }}</a></p>
                     <p>age_rating: {{ game.age_rating }}+</p>
                     <p>genre: {{ game.genre }}</p>
                     <p>***********************************************************************</p>

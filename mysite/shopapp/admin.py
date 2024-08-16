@@ -1,10 +1,19 @@
 from django.contrib import admin
-from .models import Game
+from .models import Game, GameImages
+
+
+class GameInline(admin.StackedInline):
+    model = GameImages
 
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = "pk", "name", "description", "age_rating", "genre", "system_requirements"
+
+    inlines = [
+        GameInline,
+    ]
+
+    list_display = "pk", "name", "description", "age_rating", "genre", "system_requirements", "preview"
 
     ordering = "name", "pk"
 

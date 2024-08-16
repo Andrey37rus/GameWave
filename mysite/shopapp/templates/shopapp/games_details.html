@@ -1,0 +1,40 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Game #{{ game.pk }}
+{% endblock %}
+
+{% block body %}
+    <h1>Game <strong>{{ game.name }}</strong></h1>
+
+    <div>
+        <div>
+            {% if game.preview %}
+                <img src="{{ game.preview.url }}" alt="{{ game.preview.name }}">
+            {% endif %}
+        </div>
+        <br>
+        <div>Description: {{ game.description }}</div>
+        <br>
+        <div>age_rating: {{ game.age_rating }}+</div>
+        <br>
+        <div>genre: {{ game.genre}}</div>
+        <br>
+        <div>system_requirements: {{ game.system_requirements}}</div>
+        <br>
+        <div>
+            {% for img in game.images.all %}
+                <div>
+                    <img src="{{ img.image.url }}" alt="{{ img.image.name }}">
+                    <div>{{ img.description }}</div>
+                </div>
+                {% empty %}
+                    <div class="no_images">No images uploaded yet</div>
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <div>
+        <a href="{% url 'shopapp:games_list' %}">Back to games list</a>
+    </div>
+{% endblock %}
