@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 def game_preview_directory_path(instance: "Game", filename: str) -> str:
     return "games/game_{pk}/preview/{filename}".format(
@@ -15,6 +15,8 @@ class Game(models.Model):
     genre = models.CharField(max_length=255, null=False, blank=True)  # Жанр
     system_requirements = models.TextField(null=False, blank=True)  # Системные требования
     created_at = models.DateTimeField(auto_now_add=True)  # Создание продукта
+    price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
+    discount = models.SmallIntegerField(default=0)
     archived = models.BooleanField(default=False)  # Архив
     preview = models.ImageField(null=True, blank=True, upload_to=game_preview_directory_path)
 
@@ -33,3 +35,10 @@ class GameImages(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to=game_images_directory_path)
     description = models.CharField(max_length=200, null=False, blank=True)
+
+
+class Order(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)  # Создание заказа
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    games = models.ManyToManyField(Game, related_name="orders")
+    receipt = models.FileField(null=True, blank=True, upload_to='orders/receipts/')

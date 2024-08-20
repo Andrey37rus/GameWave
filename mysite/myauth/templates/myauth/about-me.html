@@ -10,10 +10,26 @@
 
   {% if user.is_authenticated %}
     <h2>Detail</h2>
+  {% if user.profile.preview %}
+    <img class="img_avatar" src="{{ user.profile.preview.url }}" alt="{{ user.profile.preview.name }}">
+  {% endif %}
     <p>Username: {{ user.username }}</p>
-    <p>Firstname: {{ user.firstname }}</p>
-    <p>Lastname: {{ user.lastname }}</p>
+    <p>First_name: {{ user.first_name }}</p>
+    <p>Last_name: {{ user.last_name }}</p>
     <p>Email: {{ user.email }}</p>
+    <br>
+    <a href="{% url 'myauth:profile_update' pk=user.pk %}">Update</a>
+    <br>
+    <br>
+    <a href="{% url 'myauth:profile_delete' pk=user.pk %}">Delete profile</a>
+    <br>
+    <br>
+    <a href="{% url 'myauth:logout' %}">Log out</a>
+    <br>
+    <br>
+    <a href="{% url 'shopapp:games_list' %}">next page games list</a>
+
+
   {% else %}
     <h2>User is anonymous</h2>
   {% endif %}

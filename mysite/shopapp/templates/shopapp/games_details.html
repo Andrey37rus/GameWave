@@ -22,6 +22,10 @@
         <br>
         <div>system_requirements: {{ game.system_requirements}}</div>
         <br>
+        <div>Price: {{ game.price }}</div>
+        <br>
+        <div>Discount: {{ game.discount }}</div>
+        <br>
         <div>
             {% for img in game.images.all %}
                 <div>
