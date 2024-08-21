@@ -27,6 +27,15 @@
         <div>Discount: {{ game.discount }}</div>
         <br>
         <div>
+            <form action="{% url 'shopapp:add_to_cart' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="game_id" value="{{ game.pk }}">
+                <input type="number" name="quantity" value="1" min="1" required>
+                <button type="submit">Добавить в корзину</button>
+            </form>
+        </div>
+        <br>
+        <div>
             {% for img in game.images.all %}
                 <div>
                     <img src="{{ img.image.url }}" alt="{{ img.image.name }}">

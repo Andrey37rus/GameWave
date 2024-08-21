@@ -6,9 +6,9 @@
 
 
 {% block body %}
-  <h1>User info</h1>
-
   {% if user.is_authenticated %}
+    <h1>User info</h1>
+    <br>
     <h2>Detail</h2>
   {% if user.profile.preview %}
     <img class="img_avatar" src="{{ user.profile.preview.url }}" alt="{{ user.profile.preview.name }}">
@@ -17,6 +17,10 @@
     <p>First_name: {{ user.first_name }}</p>
     <p>Last_name: {{ user.last_name }}</p>
     <p>Email: {{ user.email }}</p>
+    <br>
+    <div>
+      <p><a href="{% url 'shopapp:order_list' %}">Мои заказы</a></p>
+    </div>
     <br>
     <a href="{% url 'myauth:profile_update' pk=user.pk %}">Update</a>
     <br>
@@ -28,10 +32,10 @@
     <br>
     <br>
     <a href="{% url 'shopapp:games_list' %}">next page games list</a>
-
-
+    <br>
+    <br>
   {% else %}
-    <h2>User is anonymous</h2>
+    <p><a href="{% url 'myauth:login' %}">LogIn</a></p>
   {% endif %}
 
 {% endblock %}

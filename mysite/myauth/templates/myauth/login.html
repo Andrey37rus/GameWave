@@ -11,4 +11,7 @@
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
+    <div>
+        <p><a href="{% url 'myauth:register' %}">Register</a></p>
+    </div>
 {% endblock %}

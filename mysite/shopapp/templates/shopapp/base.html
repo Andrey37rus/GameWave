@@ -5,6 +5,15 @@
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
+    <header>
+        <div>
+            <p><a href="{% url 'myauth:about-me' %}">Next page profile</a></p>
+            <p><a href="{% url 'myauth:login' %}">Next page log in</a></p>
+            <p><a href="{% url 'myauth:logout' %}">Next page log out</a></p>
+            <p><a href="{% url 'myauth:register' %}">Next page register</a></p>
+            <p><a href="{% url 'shopapp:order_list' %}">Next page order</a></p>
+        </div>
+    </header>
     <style>
         .no_images {
             color: red;

@@ -1,0 +1,35 @@
+{% extends 'shopapp/base.html' %}
+
+{% block title %}
+    Orders List
+{% endblock %}
+
+{% block body %}
+    <h1>Orders:</h1>
+    <div>
+        {% if orders %}
+            {% for order in orders %}
+                <div>
+                    <p>Order by: {{ order.user.username }}</p>
+                    <div>
+                        Game in order:
+                        <ul>
+                            {% for item in order.items.all %}
+                                <img src="{{ item.game.preview.url  }}" alt="{{ item.game.preview.name }}">
+                                <p><a href="{% url 'shopapp:games_details' pk=item.game.pk %}">Name: {{ item.game.name }}</a></p>
+                                <p>Price: ${{ item.game.price  }}</p>
+                                <p>Quantity: {{ item.quantity }}</p>
+                                <p>********************************************************************</p>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h3>No orders yet</h3>
+        {% endif %}
+    </div>
+    <div>
+        <a href="{% url 'shopapp:games_list' %}">Back to games list</a>
+    </div>
+{% endblock %}

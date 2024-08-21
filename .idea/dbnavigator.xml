@@ -35,8 +35,13 @@
         <condition column="is_active" operator="=" value="True" active="true" />
       </filter>
     </filter-actions>
+    <filter-actions connection-id="b701f368-be90-4fe0-8fbc-5697a6ce2f8e" dataset="main.sqlite_sequence" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="b701f368-be90-4fe0-8fbc-5697a6ce2f8e" dataset="main.shopapp_orderitem" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="b701f368-be90-4fe0-8fbc-5697a6ce2f8e" dataset="main.shopapp_gameimages" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="b701f368-be90-4fe0-8fbc-5697a6ce2f8e" dataset="main.shopapp_game" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="b701f368-be90-4fe0-8fbc-5697a6ce2f8e" dataset="main.myauth_profile" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="b701f368-be90-4fe0-8fbc-5697a6ce2f8e" dataset="main.shopapp_order_games" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="b701f368-be90-4fe0-8fbc-5697a6ce2f8e" dataset="main.shopapp_order" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />

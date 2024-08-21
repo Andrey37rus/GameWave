@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Game, GameImages, Order
+from .models import Game, GameImages, Order, OrderItem
 
 
 class OrderInline(admin.TabularInline):
-    model = Game.orders.through
+    model = OrderItem
 
 class GameInline(admin.StackedInline):
     model = GameImages
@@ -16,6 +16,7 @@ class GameAdmin(admin.ModelAdmin):
         GameInline,
         OrderInline,
     ]
+
 
     list_display = "pk", "name", "description_short", "age_rating", "genre", "system_requirements", "preview"
 
@@ -31,17 +32,25 @@ class GameAdmin(admin.ModelAdmin):
 
 
 class ProductInline(admin.StackedInline):
-    model = Order.games.through
+    model = OrderItem
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [
         ProductInline,
     ]
-    list_display = "created_at",  "user_verbose",
+    list_display = "created_at",  "user_verbose", "total_quantity", "total_price"
 
     def get_queryset(self, request):
-        return Order.objects.select_related("user").prefetch_related("games")
+        return Order.objects.select_related("user").prefetch_related('items__game')
 
     def user_verbose(self, obj: Order) -> str:
         return obj.user.first_name or obj.user.username
+
+    def total_quantity(self, obj: Order) -> int:
+        return sum(item.quantity for item in obj.items.all())
+    total_quantity.short_description = 'Общее количество'
+
+    def total_price(self, obj: Order) -> float:
+        return sum(item.quantity * item.game.price for item in obj.items.all())  # Убедитесь, что у модели Game есть поле price
+    total_price.short_description = 'Общая цена'
