@@ -39,7 +39,7 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         ProductInline,
     ]
-    list_display = "created_at",  "user_verbose", "total_quantity", "total_price"
+    list_display = "pk", "created_at",  "user_verbose", "total_quantity", "total_price"
 
     def get_queryset(self, request):
         return Order.objects.select_related("user").prefetch_related('items__game')
@@ -49,8 +49,8 @@ class OrderAdmin(admin.ModelAdmin):
 
     def total_quantity(self, obj: Order) -> int:
         return sum(item.quantity for item in obj.items.all())
-    total_quantity.short_description = 'Общее количество'
+    total_quantity.short_description = 'total_quantity'
 
     def total_price(self, obj: Order) -> float:
         return sum(item.quantity * item.game.price for item in obj.items.all())  # Убедитесь, что у модели Game есть поле price
-    total_price.short_description = 'Общая цена'
+    total_price.short_description = 'total_price'

@@ -19,6 +19,9 @@
                                 <p><a href="{% url 'shopapp:games_details' pk=item.game.pk %}">Name: {{ item.game.name }}</a></p>
                                 <p>Price: ${{ item.game.price  }}</p>
                                 <p>Quantity: {{ item.quantity }}</p>
+                                <a href="{% url 'shopapp:order_update' pk=item.pk %}">Update order</a>
+                                <br>
+                                <a href="{% url 'shopapp:order_delete' pk=item.pk %}">Delete order</a>
                                 <p>********************************************************************</p>
                             {% endfor %}
                         </ul>
@@ -32,4 +35,5 @@
     <div>
         <a href="{% url 'shopapp:games_list' %}">Back to games list</a>
     </div>
+
 {% endblock %}
