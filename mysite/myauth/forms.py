@@ -51,19 +51,20 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
-
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')
 
     def __init__(self, *args, **kwargs):
-        super(CustomUserChangeForm, self).__init__(*args, **kwargs)
-        if 'password' in self.fields:
-            del self.fields['password']
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    preview = forms.ImageField(required=False, widget=forms.FileInput)
     class Meta:
         model = Profile
         fields = ('preview',)
+

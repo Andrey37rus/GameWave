@@ -1,39 +1,46 @@
-{% extends 'shopapp/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
     Orders List
 {% endblock %}
 
-{% block body %}
-    <h1>Orders:</h1>
-    <div>
-        {% if orders %}
-            {% for order in orders %}
-                <div>
-                    <p>Order by: {{ order.user.username }}</p>
-                    <div>
-                        Game in order:
-                        <ul>
-                            {% for item in order.items.all %}
-                                <img src="{{ item.game.preview.url  }}" alt="{{ item.game.preview.name }}">
-                                <p><a href="{% url 'shopapp:games_details' pk=item.game.pk %}">Name: {{ item.game.name }}</a></p>
-                                <p>Price: ${{ item.game.price  }}</p>
-                                <p>Quantity: {{ item.quantity }}</p>
-                                <a href="{% url 'shopapp:order_update' pk=item.pk %}">Update order</a>
-                                <br>
-                                <a href="{% url 'shopapp:order_delete' pk=item.pk %}">Delete order</a>
-                                <p>********************************************************************</p>
-                            {% endfor %}
-                        </ul>
+{% block content %}
+    <div class="container my-5">
+        <h1 class="mb-4">Orders:</h1>
+        <div>
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <p>Order by: {{ order.user.username }}</p>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Game in order:</h5>
+                            <div class="row">
+                                {% for item in order.items.all %}
+                                    <div class="col-md-4 mb-4">
+                                        <img src="{{ item.game.preview.url }}" alt="{{ item.game.preview.name }}" class="img-fluid">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p><a href="{% url 'shopapp:games_details' pk=item.game.pk %}" class="card-link">{{ item.game.name }}</a></p>
+                                        <p>Price: ${{ item.game.price }}</p>
+                                        <p>Quantity: {{ item.quantity }}</p>
+                                        <div>
+                                            <a href="{% url 'shopapp:order_update' pk=item.pk %}" class="btn btn-primary mr-2">Update order</a>
+                                            <a href="{% url 'shopapp:order_delete' pk=item.pk %}" class="btn btn-danger">Delete order</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <h3>No orders yet</h3>
-        {% endif %}
+                {% endfor %}
+            {% else %}
+                <h3>No orders yet</h3>
+            {% endif %}
+        </div>
+        <div>
+            <a href="{% url 'shopapp:games_list' %}" class="btn btn-secondary">Back to games list</a>
+        </div>
     </div>
-    <div>
-        <a href="{% url 'shopapp:games_list' %}">Back to games list</a>
-    </div>
-
 {% endblock %}

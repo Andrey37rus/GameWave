@@ -1,25 +1,27 @@
-{% extends 'shopapp/base.html' %}
+{% extends 'base.html' %}
+
 
 {% block title %}
   Confirm delete {{ object.name }}
 {% endblock %}
 
-{% block body %}
-  <h1>Are you sure you want to delete ? {{ object.name }}</h1>
-  <br>
-  <div>
-    <img src="{{ item.game.preview.url  }}" alt="{{ item.game.preview.name }}">
-    <a href="{% url 'shopapp:order_list' %}">Back to order list</a>
-  </div>
-  <br>
+{% block content %}
+  <div class="container my-5">
+    <h1 class="mb-4">Are you sure you want to delete {{ object.name }}?</h1>
+    <br>
+    <div class="card mb-4">
+      <img src="{{ object.game.preview.url }}" alt="{{ object.game.preview.name }}" class="card-img-top img-thumbnail" style="max-width: 200px;">
+      <div class="card-body">
+        <a href="{% url 'shopapp:order_list' %}" class="btn btn-secondary">Back to Order List</a>
+      </div>
+    </div>
+    <br>
 
-  <div>
-    <form method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">
-        Delete
-      </button>
-    </form>
+    <div>
+      <form method="POST" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
   </div>
 {% endblock %}

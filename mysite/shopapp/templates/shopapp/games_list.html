@@ -1,29 +1,46 @@
-{% extends 'shopapp/base.html' %}
+{% extends 'base.html' %}
+
+{% load static %}
 
 {% block title %}
     Games list
 {% endblock %}
 
-{% block body %}
-    <h1>Games</h1>
-    <div>
-        {% if games %}
-            {% for game in games %}
-                <div>
-                    {% if game.preview %}
-                        <img src="{{ game.preview.url }}" alt="{{ game.preview.name }}">
-                    {% endif %}
-                </div>
-                <div>
-                    <p><a href="{% url 'shopapp:games_details' pk=game.pk %}">Name: {{ game.name }}</a></p>
-                    <p>age_rating: {{ game.age_rating }}+</p>
-                    <p>genre: {{ game.genre }}</p>
-                    <p>***********************************************************************</p>
-                </div>
-            {% endfor %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'shopapp/style.css' %}">
+{% endblock %}
 
-        {% else %}
-            <h3>No games yet</h3>
-        {% endif %}
+{% block content %}
+    <div class="container">
+        <h1 class="text-center my-4">Games</h1>
+
+        <ul class="list-unstyled row">
+            {% if games %}
+                {% for game in games %}
+                    <li class="col-md-3 mb-4">
+                        <div class="card h-100" data-href="{% url 'shopapp:games_details' pk=game.pk %}">
+                            <div class="preview-container">
+                                {% if game.preview %}
+                                    <img src="{{ game.preview.url }}" class="card-img-top preview-image" alt="{{ game.preview.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ game.name }}</h5>
+                                <div class="d-flex justify-content-between">
+                                    <p class="card-text">Age Rating: {{ game.age_rating }}+</p>
+                                    <p class="card-text">Price: {{ game.price }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="col-12">
+                    <h3 class="text-center">No games yet</h3>
+                </li>
+            {% endif %}
+        </ul>
     </div>
+
+    <script src="{% static 'shopapp/script.js' %}"></script>
 {% endblock %}

@@ -1,14 +1,58 @@
-{% extends 'myauth/base.html' %}
+{% extends 'base.html' %}
+
+{% load static %}
 
 {% block title %}
     Update profile
 {% endblock %}
 
-{% block body %}
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {{ profile_form.as_p }}
-        <button type="submit">Update</button>
-    </form>
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'myauth/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="mb-0 text-center">Update Profile</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form.username.label_tag }}
+                                {{ form.username }}
+                                {{ form.username.errors }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
+                                {{ form.email.errors }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.first_name.label_tag }}
+                                {{ form.first_name }}
+                                {{ form.first_name.errors }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.last_name.label_tag }}
+                                {{ form.last_name }}
+                                {{ form.last_name.errors }}
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                {{ profile_form.preview }}
+                                {{ profile_form.preview.errors }}
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary btn-block">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

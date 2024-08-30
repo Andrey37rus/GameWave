@@ -1,25 +1,30 @@
-{% extends 'myauth/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
     Confirm delete {{ object.name }}
 {% endblock %}
 
-{% block body %}
-    <h1>Are you sure you want to delete ? {{ object.name }}</h1>
-    <br>
-    <div>
-        <a href="{% url 'myauth:about-me' %}">
-            Back to about me
-        </a>
-        <div>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <br>
-                <button type="submit">
-                    Delete
-                </button>
-            </form>
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="mb-0 text-center">Are you sure you want to delete {{ object.name }}?</h1>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <a href="{% url 'myauth:about-me' %}" class="btn btn-secondary">Back to about me</a>
+                        </div>
+                        <form method="POST" class="text-center">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <br>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -1,53 +1,77 @@
-{% extends 'shopapp/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
     Game #{{ game.pk }}
 {% endblock %}
 
-{% block body %}
-    <h1>Game <strong>{{ game.name }}</strong></h1>
-
-    <div>
-        <div>
-            {% if game.preview %}
-                <img src="{{ game.preview.url }}" alt="{{ game.preview.name }}">
-            {% endif %}
-        </div>
-        <br>
-        <div>Description: {{ game.description }}</div>
-        <br>
-        <div>age_rating: {{ game.age_rating }}+</div>
-        <br>
-        <div>genre: {{ game.genre}}</div>
-        <br>
-        <div>system_requirements: {{ game.system_requirements}}</div>
-        <br>
-        <div>Price: {{ game.price }}</div>
-        <br>
-        <div>Discount: {{ game.discount }}</div>
-        <br>
-        <div>
-            <form action="{% url 'shopapp:add_to_cart' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="game_id" value="{{ game.pk }}">
-                <input type="number" name="quantity" value="1" min="1" required>
-                <button type="submit">Добавить в корзину</button>
-            </form>
-        </div>
-        <br>
-        <div>
-            {% for img in game.images.all %}
-                <div>
-                    <img src="{{ img.image.url }}" alt="{{ img.image.name }}">
-                    <div>{{ img.description }}</div>
+{% block content %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-4">
+                {% if game.preview %}
+                    <img src="{{ game.preview.url }}" alt="{{ game.preview.name }}" class="img-fluid">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h1>{{ game.name }}</h1>
+                <p><strong>Age Rating:</strong> {{ game.age_rating }}+</p>
+                <p><strong>Genre:</strong> {{ game.genre }}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>System Requirements:</strong> {{ game.system_requirements }}</p>
+                    </div>
                 </div>
-                {% empty %}
-                    <div class="no_images">No images uploaded yet</div>
-            {% endfor %}
+            </div>
         </div>
-    </div>
-    <br>
-    <div>
-        <a href="{% url 'shopapp:games_list' %}">Back to games list</a>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h2>Description</h2>
+                <p>{{ game.description }}</p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h2>Price</h2>
+                <p>{{ game.price }}</p>
+                <h2>Discount</h2>
+                <p>{{ game.discount }}</p>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <form action="{% url 'shopapp:add_to_cart' %}" method="post" class="form-inline justify-content-end">
+                    {% csrf_token %}
+                    <input type="hidden" name="game_id" value="{{ game.pk }}">
+                    <div class="form-group mr-2">
+                        <input type="number" name="quantity" value="1" min="1" required class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h2>Additional Images</h2>
+                <div class="row">
+                    {% for img in game.images.all %}
+                        <div class="col-md-4 mb-4">
+                            <img src="{{ img.image.url }}" alt="{{ img.image.name }}" class="img-fluid">
+                            <p>{{ img.description }}</p>
+                        </div>
+                    {% empty %}
+                        <div class="col-md-12 no_images">No images uploaded yet</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <a href="{% url 'shopapp:games_list' %}" class="btn btn-secondary">Back to Games List</a>
+            </div>
+        </div>
     </div>
 {% endblock %}
+
+
+
+
