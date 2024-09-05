@@ -3,7 +3,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
-
+from django.db.models import F, ExpressionWrapper, DecimalField
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
@@ -13,7 +13,14 @@ from .models import Game, Order, OrderItem
 class GameListView(ListView):
     template_name = "shopapp/games_list.html"
     context_object_name = "games"
-    queryset = Game.objects.filter(archived=False)
+
+    def get_queryset(self):
+        return Game.objects.filter(archived=False).annotate(
+            discounted_price=ExpressionWrapper(
+                F('price') * (1 - F('discount') / 100),
+                output_field=DecimalField(max_digits=8, decimal_places=2)
+            )
+        )
 
 
 class GameDetailView(DetailView):

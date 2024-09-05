@@ -28,7 +28,11 @@
                                 <h5 class="card-title">{{ game.name }}</h5>
                                 <div class="d-flex justify-content-between">
                                     <p class="card-text">Age Rating: {{ game.age_rating }}+</p>
-                                    <p class="card-text">Price: {{ game.price }}</p>
+                                    {% if game.discount %}
+                                        <p class="card-text" style="color: #00CF00">Price: {{ game.discounted_price }}</p>
+                                    {% else %}
+                                        <p class="card-text">Price: {{ game.price }}</p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
