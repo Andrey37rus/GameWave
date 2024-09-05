@@ -46,3 +46,4 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+    total_price = models.DecimalField(default=0, max_digits=10, decimal_places=2)  # Добавлено поле для общей цены

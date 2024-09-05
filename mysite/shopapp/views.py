@@ -3,7 +3,8 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
-
+from decimal import Decimal
+from django.db.models import F, ExpressionWrapper, DecimalField
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
@@ -13,7 +14,14 @@ from .models import Game, Order, OrderItem
 class GameListView(ListView):
     template_name = "shopapp/games_list.html"
     context_object_name = "games"
-    queryset = Game.objects.filter(archived=False)
+
+    def get_queryset(self):
+        return Game.objects.filter(archived=False).annotate(
+            discounted_price=ExpressionWrapper(
+                F('price') * (1 - F('discount') / 100),
+                output_field=DecimalField(max_digits=8, decimal_places=2)
+            )
+        )
 
 
 class GameDetailView(DetailView):
@@ -32,6 +40,11 @@ class UserOrderListView(LoginRequiredMixin, ListView):
         return Order.objects.filter(user=self.request.user).prefetch_related('items__game')
 
 
+def calculate_total_price(game, quantity):
+    discount = Decimal(game.discount) / Decimal(100) if game.discount else Decimal(0)
+    total_price = Decimal(game.price) * Decimal(quantity) * (Decimal(1) - discount)
+    return total_price
+
 class OrderCreateView(CreateView):
     model = Order
     template_name = 'shopapp/order_form.html'
@@ -48,8 +61,11 @@ class OrderCreateView(CreateView):
         # Создаем новый ордер
         order = Order.objects.create(user=self.request.user)
 
+        # Вычисляем цену с учетом скидки
+        total_price_value = calculate_total_price(game, quantity)
+
         # Добавляем товар в ордер
-        order_item = OrderItem.objects.create(order=order, game=game, quantity=quantity)
+        order_item = OrderItem.objects.create(order=order, game=game, quantity=quantity, total_price=total_price_value)
 
         messages.success(self.request, f'Товар "{game.name}" добавлен в корзину!')
         return redirect('shopapp:order_list')
@@ -61,13 +77,27 @@ class OrderUpdateView(UpdateView):
     template_name = "shopapp/order_update_form.html"
 
     def form_valid(self, form):
+        quantity = form.cleaned_data['quantity']
         if form.cleaned_data['quantity'] < 1:
             form.add_error('quantity', 'The quantity must be at least 1')
             return self.form_invalid(form)
+
+        # Получаем объект игры
+        game = self.object.game
+
+        # Вычисляем новую цену с учетом скидки
+        total_price_value = calculate_total_price(game, quantity)
+
+        # Обновляем количество и общую цену
+        self.object.quantity = quantity
+        self.object.total_price = total_price_value
+        self.object.save()
+
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("shopapp:order_list")
+
 
 class OrderDeleteView(DeleteView):
     model = OrderItem

@@ -4,6 +4,7 @@
     Orders List
 {% endblock %}
 
+
 {% block content %}
     <div class="container my-5">
         <h1 class="mb-4">Orders:</h1>
@@ -23,8 +24,11 @@
                                     </div>
                                     <div class="col-md-8">
                                         <p><a href="{% url 'shopapp:games_details' pk=item.game.pk %}" class="card-link">{{ item.game.name }}</a></p>
-                                        <p>Price: ${{ item.game.price }}</p>
+                                        <p>Price: ${{ item.total_price }}</p>
                                         <p>Quantity: {{ item.quantity }}</p>
+                                        {% if item.game.discount %}
+                                            <p style="color: #00CF00">Discount: {{ item.game.discount }}%</p>
+                                        {% endif %}
                                         <div>
                                             <a href="{% url 'shopapp:order_update' pk=item.pk %}" class="btn btn-primary mr-2">Update order</a>
                                             <a href="{% url 'shopapp:order_delete' pk=item.pk %}" class="btn btn-danger">Delete order</a>

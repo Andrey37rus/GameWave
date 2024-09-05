@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
     Game #{{ game.pk }}
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'shopapp/style.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -33,8 +39,10 @@
             <div class="col-md-12">
                 <h2>Price</h2>
                 <p>{{ game.price }}</p>
-                <h2>Discount</h2>
-                <p>{{ game.discount }}</p>
+                {% if game.discount %}
+                    <h2>Discount</h2>
+                    <p style="color: #00CF00">{{ game.discount }}%</p>
+                {% endif %}
             </div>
         </div>
         <div class="row mt-4">
