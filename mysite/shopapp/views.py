@@ -2,6 +2,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib import messages
 from decimal import Decimal
 from django.db.models import F, ExpressionWrapper, DecimalField
@@ -45,9 +47,10 @@ def calculate_total_price(game, quantity):
     total_price = Decimal(game.price) * Decimal(quantity) * (Decimal(1) - discount)
     return total_price
 
+@method_decorator(login_required, name='dispatch')
 class OrderCreateView(CreateView):
     model = Order
-    template_name = 'shopapp/order_form.html'
+    template_name = 'shopapp/order_list.html'
     fields = []
 
     def form_valid(self, form):
@@ -69,7 +72,6 @@ class OrderCreateView(CreateView):
 
         messages.success(self.request, f'Товар "{game.name}" добавлен в корзину!')
         return redirect('shopapp:order_list')
-
 
 class OrderUpdateView(UpdateView):
     model = OrderItem
