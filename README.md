@@ -1,13 +1,12 @@
 #### 1. **Общие сведения**
    - **Название проекта**: Сайт магазин с компьютерными играми
    - **Технологии**: 
-   - Python,
-   - Django, 
-   - SQLite 
-   - HTML/CSS, 
-   - JavaScript, 
-   - Bootstrap 
+   - Python
    - Django 
+   - SQLite 
+   - HTML/CSS 
+   - JavaScript
+   - Bootstrap 
    - Rest Framework
 
 
